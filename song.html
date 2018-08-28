@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_666808_rpn05b4ytsi.css">
+    <link rel="stylesheet" href="./song.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="page">
+        <div class="disc-container">
+            <img class="pointer" src="http://s3.music.126.net/m/s/img/needle-ip6.png?be4ebbeb6befadfcae75ce174e7db862" alt="">
+            <div class="disc">
+                <img class="ring" src="http://s3.music.126.net/m/s/img/disc-ip6.png?69796123ad7cfe95781ea38aac8f2d48" alt="">
+                <img class="light" src="http://s3.music.126.net/m/s/img/disc_light-ip6.png?996fc8a2bc62e1ab3f51f135fc459577" alt="">
+                <!-- <img class="cover" src="http://p1.music.126.net/_ZIyHUML8sXBvJXqLdQDOg==/105553116278617.jpg?imageView&thumbnail=360x0&quality=75&tostatic=0" alt=""> -->
+                <span>
+                    <i class="iconfont icon-play"></i>
+                </span>
+                <!-- <span><i class="iconfont icon-pause"></i></span> -->
+            </div>
+        </div>
+        <div class="song-description">
+            <!-- <h1><span>玫瑰-</span>贰佰</h1>
+                                <div class="lyric">
+                                    <div class="lines">
+                                    </div>
+                                </div> -->
+        </div>
+        <div class="links">
+            <a href="#">打开</a>
+            <a class="main" href="#">下载</a>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>
+        $(function () {
+            var id = parseInt(location.search.match(/\bid=([^&]*)/)[1], 10)
+            // console.log(location.search.match(/\bid=([^&]*)/))
+            if (id <= 10) {
+                $.get('./songs.json').then(function (response) {
+                    var songs = response
+                    // console.log(id)
+                    // console.log(songs)
+                    var song = songs.filter(function (s) {
+                        // console.log(s)
+                        // console.log(s.id)
+                        // console.log(s.id == id)
+                        return s.id == id
+                    })[0]
+                    var url = song.url
+                    var img = song.img
+                    var title = song.title
+                    var author = song.author
+                    var lyric = song.lyric
+                    // console.log(url)
+                    var $img = $(`<img class="cover" src="${img}" alt="">`)
+                    $('.disc').append($img)
+                    var $songDescription = $(`
+                        <h1><span>${title}-</span>${author}</h1>
+                        <div class="lyric">
+                            <div class="lines">
+                            </div>
+                        </div> 
+                         `)
+                    $('.song-description').append($songDescription)
+                    initPlayer.call(undefined, url)
+                    initText(lyric)
+                })
+            }
+
+            if (20 > id & id > 10) {
+                $.get('./hotMusic.json').then(function (response) {
+                    var songs = response
+                    // console.log(id)
+                    // console.log(songs)
+                    var song = songs.filter(function (s) {
+                        // console.log(s)
+                        // console.log(s.id)
+                        // console.log(s.id == id)
+                        return s.id == id
+                    })[0]
+                    var url = song.url
+                    var img = song.img
+                    var title = song.title
+                    var author = song.author
+                    var lyric = song.lyric
+                    // console.log(url)
+                    var $img = $(`<img class="cover" src="${img}" alt="">`)
+                    $('.disc').append($img)
+                    var $songDescription = $(`
+                        <h1><span>${title}-</span>${author}</h1>
+                        <div class="lyric">
+                            <div class="lines">
+                            </div>
+                        </div> 
+                         `)
+                    $('.song-description').append($songDescription)
+                    initPlayer.call(undefined, url)
+                    initText(lyric)
+                })
+            }
+        
+
+
+            function initText(lyric) {
+                // console.log(lyric)
+                parseLyric(lyric)
+            }
+
+            function initPlayer(url) {
+                var audio = document.createElement('audio')
+                audio.src = url
+                audio.oncanplay = function () {
+                    audio.play()
+                    $('.disc-container').addClass('playing')
+                }
+                $('.page').on('click', function () {
+                    audio.pause()
+                    $('.disc-container').removeClass('playing')
+                })
+                $('.icon-play').on('click', function (e) {
+                    e.stopPropagation()
+                    audio.play()
+                    $('.disc-container').addClass('playing')
+                })
+                $('.links').on('click', function (e) {
+                    e.stopPropagation()
+                })
+                setInterval(() => {
+                    var seconds = audio.currentTime
+                    var munites = ~~(seconds / 60)
+                    var left = seconds - munites * 60
+                    var time = `${pad(munites)}:${pad(left)}`
+                    // console.log(time)
+                    var $lines = $('.lines > p')
+                    var $whichLine
+                    for (var i = 0; i < $lines.length; i++) {
+                        var currentLineTime = $lines.eq(i).attr('data-time')
+                        // console.log(currentLineTime)
+                        var nextLineTime = $lines.eq(1 + i).attr('data-time')
+                        // console.log(nextLineTime)
+                        if ($lines.eq(i + 1).length !== 0 && currentLineTime < time && nextLineTime > time) {
+                            $whichLine = $lines.eq(i)
+                            // console.log($whichLine)
+                            break
+                        }
+                    }
+                    if ($whichLine) {
+                        $whichLine.addClass('active').prev().removeClass('active')
+                        var top = $whichLine.offset().top
+                        var linesTop = $('.lines').offset().top
+                        var delta = top - linesTop - $('.lyric').height() / 3
+                        $('.lines').css('transform', `translateY(-${delta}px)`)
+                    }
+                }, 500)
+            }
+            function pad(number) {
+                return number >= 10 ? number + '' : '0' + number
+            }
+            function parseLyric(lyric) {
+                var array = lyric.split('\n')
+                // console.log(array)
+                var regex = /^\[(.+)\](.*)$/
+                array = array.map(function (string) {
+                    var matches = string.match(regex)
+                    // console.log(matches)
+                    if (matches) {
+                        return { time: matches[1], words: matches[2] }
+                    }
+                })
+                // console.log(array)
+                var $lyric = $('.lyric')
+                array.map(function (object) {
+                    if (!object) { return }
+                    var $p = $('<p/>')
+                    $p.attr('data-time', object.time).text(object.words)
+                    $p.appendTo($lyric.children('.lines'))
+                })
+            }
+        })
+    
+    </script>
+</body>
+</html>
