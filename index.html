@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="./logo.png">
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_767383_vgxbt82hv5.css">
     <link rel="stylesheet" href="./index.css">
     <title>网易云音乐</title>
@@ -305,7 +306,7 @@
                 <input id="searchSong" type="text" placeholder="搜索歌曲名">
             </div>
             <div id="output">
-                <ol><li></li></ol>
+                <ol></ol>
             </div>
         </li>
     </ol>
@@ -376,8 +377,10 @@
             $('input#searchSong').on('input', function (e) {
                 var $input = $(e.currentTarget)
                 var value = $input.val().trim()
-                if (value === '') { return }
-
+                if (value === '') { 
+                    $('#output li').remove()
+                    return
+                 }
                 if (timer) {
                     clearTimeout(timer)
                 }
@@ -392,7 +395,7 @@
                             var items = result
                         items.forEach((i) => {
                             var $li = $(`
-                                        <li>
+                                        <li class="add-music">
                                             <a href="./song.html?id=${i.id}">
                                                 <p>${i.name}-${i.author}</p>
                                             </a>
@@ -402,8 +405,13 @@
                         })
                             // $('#output').text(result.map((r) => r.name).join('\n'))
                             // $('#output').show()
-                        } else {
-                            
+                        } else if(! $('#output li').hasClass('yes')) {
+                            var $li = $('<li class="yes"></li>')
+                            $('#output').append($li)
+                            $('#output .add-music').remove()
+                            $('#output li').text('没有结果')
+                        }else{
+                            $('#output .add-music').remove()
                             $('#output li').text('没有结果')
                         }
                         $('#output').show()
@@ -414,14 +422,28 @@
                 return new Promise((resolve, reject) => {
     
                     var database = [
-                        { "id": "1", "name": "可惜不是你","author":"陈奕迅" },
-                        { "id": "2", "name": "南山南","author":"陈小春"},
-                        { "id": "3", "name": "可以了","author":"周杰伦" }
+                        { "id": "1", "name": "沙漠骆驼","author":"展展与罗罗" },
+                        { "id": "2", "name": "郑州的记忆","author":"李志"},
+                        { "id": "3", "name": "热河","author":"李志" },
+                        { "id": "4", "name": "傻瓜","author":"马条"},
+                        { "id": "5", "name": "天空之城","author":"李志"},
+                        { "id": "6", "name": "傲寒","author":"马頔"},
+                        { "id": "7", "name": "南方姑娘","author":"赵雷"},
+                        { "id": "8", "name": "斑马斑马","author":"宋冬野"},
+                        { "id": "9", "name": "米店","author":"李志"},
+                        { "id": "10", "name": "去大理","author":"蔡华鹏"},
+                        { "id": "11", "name": "平凡之路","author":"朴树"},
+                        { "id": "12", "name": "最佳损友","author":"陈奕迅"},
+                        { "id": "13", "name": "十面埋伏","author":"陈奕迅"},
+                        { "id": "14", "name": "成都","author":"赵雷"},
+                        { "id": "15", "name": "落花流水","author":"陈奕迅"},
                     ]
                     var result = database.filter(function (item) {
-                        // console.log(item.name.indexOf(keyword))
-                        return item.name.indexOf(keyword) >= 0
+                        console.log( item.name.indexOf(keyword) >= 0 )
+                        // console.log(item.name.indexOf(keyword) >= 0)
+                        return item.name.indexOf(keyword) >= 0 || item.author.indexOf(keyword) >= 0
                     })
+                    console.log(result)
                     setTimeout(function () {
                         resolve(result)
                     }, (Math.random() * 1000 + 100))

@@ -195,7 +195,7 @@ section.art .logosvg {
 }
 section.art .openApp {
     display: block;
-    padding: 0 26px;
+    padding: 0 24px;
     text-align: center;
     color: #D43c33;
     border: 1px solid;
@@ -223,13 +223,13 @@ section.art .copyright {
 }
 .search input {
     width: calc(100% - 36px);
-    line-height: 36px;
+    line-height: 30px;
     margin-top: 18px;
-    border-radius: 6px;
-    background-color:lightgray;
+    border-radius: 15px;
+    background-color: #EBECEC;
     outline: 0 none;
     border: none;
-    font-size: 18px;
+    font-size: 15px;
     padding-left: 33px
 }
 #output {
@@ -239,11 +239,11 @@ section.art .copyright {
     display: none;
     margin-left: 18px;
     margin-right: 66px;
-    box-shadow: 0px 3px 4px 2px rgba(0,0,0, 0.4);
-    border-radius: 1vw;
+    /* box-shadow: 0px 3px 4px 2px rgba(0,0,0, 0.4);
+    border-radius: 1vw; */
 }
 #output li {
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid #F5F6F7;
     padding: 8px 0;
 }
 .searchSong {
@@ -251,10 +251,10 @@ section.art .copyright {
 }
 .searchSong > .searchLogo {
     position: absolute;
-    top: 19px;
-    left: 17px;
+    top: 25px;
+    left: 26px;
 }
 .searchSong > .searchLogo i {
-    font-size: 32px;
+    font-size: 16px;
     color: darkgrey;
 }
