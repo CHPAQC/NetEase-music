@@ -139,7 +139,7 @@
                 //     audio.play()
                 //     $('.disc-container').addClass('playing')
                 // })
-                $('.back > a').on('click',function(){
+                $('.back > a').on('click',function(e){
                   e.stopPropagation()
                   audio.pause()
                   $('.disc-container').removeClass('playing')
