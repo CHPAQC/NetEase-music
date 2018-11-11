@@ -162,6 +162,7 @@ section > h2:first-child {
 .lastestMusic>ol>li>span{
     position: absolute;
     top: 50%;
+    left: 5px;
     transform: translate(-50%,-50%);
     color: #AAAAAA;
     font-size: 21.8px;
