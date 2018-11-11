@@ -140,6 +140,7 @@
                 //     $('.disc-container').addClass('playing')
                 // })
                 $('.back > a').on('click',function(){
+                  e.stopPropagation()
                   audio.pause()
                   $('.disc-container').removeClass('playing')
                 })
