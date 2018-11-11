@@ -29,6 +29,11 @@
     flex-direction: column;
     height: 100vh;
 }
+.back > a {
+    text-decoration: none;
+    padding: 16px;
+    color: darkslategrey;
+}
 .bgi{
     /* content: ''; */
     height: 100%;
